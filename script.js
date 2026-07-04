@@ -1,37 +1,38 @@
 const form = document.getElementById("login-form");
-const username = document.getElementById("username");
-const password = document.getElementById("password");
+const usernameInput = document.getElementById("username");
+const passwordInput = document.getElementById("password");
 const checkbox = document.getElementById("checkbox");
 const existing = document.getElementById("existing");
 
-// Hide button initially
-existing.style.display = "none";
-
-// Show button if credentials exist
-if (localStorage.getItem("username") && localStorage.getItem("password")) {
-    existing.style.display = "inline-block";
+// Show the "existing user" button only if credentials were saved previously
+function refreshExistingButton() {
+  const hasSavedCredentials =
+    localStorage.getItem("username") && localStorage.getItem("password");
+  existing.style.display = hasSavedCredentials ? "inline-block" : "none";
 }
 
+refreshExistingButton();
+
 form.addEventListener("submit", function (e) {
-    e.preventDefault();
+  e.preventDefault();
 
-    const user = username.value.trim();
-    const pass = password.value;
+  const user = usernameInput.value.trim();
+  const pass = passwordInput.value;
 
-    alert(`Logged in as ${user}`);
+  if (checkbox.checked) {
+    localStorage.setItem("username", user);
+    localStorage.setItem("password", pass);
+  } else {
+    localStorage.removeItem("username");
+    localStorage.removeItem("password");
+  }
 
-    if (checkbox.checked) {
-        localStorage.setItem("username", user);
-        localStorage.setItem("password", pass);
-        existing.style.display = "inline-block";
-    } else {
-        localStorage.removeItem("username");
-        localStorage.removeItem("password");
-        existing.style.display = "none";
-    }
+  refreshExistingButton();
+
+  alert(`Logged in as ${user}`);
 });
 
 existing.addEventListener("click", function () {
-    const user = localStorage.getItem("username");
-    alert(`Logged in as ${user}`);
+  const savedUser = localStorage.getItem("username");
+  alert(`Logged in as ${savedUser}`);
 });
