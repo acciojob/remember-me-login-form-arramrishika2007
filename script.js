@@ -4,12 +4,11 @@ const password = document.getElementById("password");
 const checkbox = document.getElementById("checkbox");
 const existing = document.getElementById("existing");
 
-// Check saved credentials
-const savedUsername = localStorage.getItem("username");
-const savedPassword = localStorage.getItem("password");
-
-if (savedUsername && savedPassword) {
+// Show existing user button if credentials exist
+if (localStorage.getItem("user") && localStorage.getItem("pwd")) {
     existing.hidden = false;
+} else {
+    existing.hidden = true;
 }
 
 form.addEventListener("submit", function (e) {
@@ -18,18 +17,18 @@ form.addEventListener("submit", function (e) {
     alert(`Logged in as ${username.value}`);
 
     if (checkbox.checked) {
-        localStorage.setItem("username", username.value);
-        localStorage.setItem("password", password.value);
+        localStorage.setItem("user", username.value);
+        localStorage.setItem("pwd", password.value);
         existing.hidden = false;
     } else {
-        localStorage.removeItem("username");
-        localStorage.removeItem("password");
+        localStorage.removeItem("user");
+        localStorage.removeItem("pwd");
         existing.hidden = true;
     }
 });
 
 existing.addEventListener("click", function () {
-    const user = localStorage.getItem("username");
+    const user = localStorage.getItem("user");
     if (user) {
         alert(`Logged in as ${user}`);
     }
