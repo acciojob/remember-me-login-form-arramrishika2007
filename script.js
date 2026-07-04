@@ -4,32 +4,34 @@ const password = document.getElementById("password");
 const checkbox = document.getElementById("checkbox");
 const existing = document.getElementById("existing");
 
-// Show existing user button if credentials exist
-if (localStorage.getItem("user") && localStorage.getItem("pwd")) {
-    existing.hidden = false;
-} else {
-    existing.hidden = true;
+// Hide button initially
+existing.style.display = "none";
+
+// Show button if credentials exist
+if (localStorage.getItem("username") && localStorage.getItem("password")) {
+    existing.style.display = "inline-block";
 }
 
 form.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    alert(`Logged in as ${username.value}`);
+    const user = username.value.trim();
+    const pass = password.value;
+
+    alert(`Logged in as ${user}`);
 
     if (checkbox.checked) {
-        localStorage.setItem("user", username.value);
-        localStorage.setItem("pwd", password.value);
-        existing.hidden = false;
+        localStorage.setItem("username", user);
+        localStorage.setItem("password", pass);
+        existing.style.display = "inline-block";
     } else {
-        localStorage.removeItem("user");
-        localStorage.removeItem("pwd");
-        existing.hidden = true;
+        localStorage.removeItem("username");
+        localStorage.removeItem("password");
+        existing.style.display = "none";
     }
 });
 
 existing.addEventListener("click", function () {
-    const user = localStorage.getItem("user");
-    if (user) {
-        alert(`Logged in as ${user}`);
-    }
+    const user = localStorage.getItem("username");
+    alert(`Logged in as ${user}`);
 });
